@@ -42,19 +42,19 @@
 
 有限个相同类型变量组成的有序集合被称为数组。
 
-数据是顺序存储，因此数组可以实现顺序表。
+数据是**顺序存储**，因此数组可以实现顺序表。
 
-(1).读取元素/更新元素[^ReadArrayTN]
+#### (1).读取元素/更新元素[^ReadArrayTN]
 
 数组通过下标读取元素，这种方式被称为**随机读取**。
 
-(2).插入元素[^InsertArrayTN]
+#### (2).插入元素[^InsertArrayTN]
 
-​	1).尾部插入
+* 尾部插入
 
-​	2).中间插入
+* 中间插入
 
-​	3).超范围插入（需要数组扩容）
+* 超范围插入（需要数组扩容）
 
  ````java
 
@@ -152,11 +152,140 @@
 
 ### 2.链表
 
-### 3.栈
+链表在内存中是以**随机存储**的方式进行存储的，是一种**非连续**、**非顺序**的数据结构。
 
-### 4.队列
+链表的结构是：
 
-### 5.散列表
+数据+下一个节点 ----> 数据+下一节点 ----> 数据+下一节点 ----> null
+
+头节点                                                                 尾节点
+
+#### (1).查找节点[^FindChainTN]
+
+#### (2).更新节点
+
+#### (3).插入节点[^InsertChainTN]
+
+* 尾部插入
+* 中间插入
+* 头部插入
+
+#### (4).删除节点[^DeleteChainTN]
+
+* 尾部删除
+* 中间删除
+* 头部删除
+
+```java
+	public static class Node{
+        int data;
+        Node next;
+
+        Node(int data){
+            this.data = data;
+        }
+    }
+
+    private Node head;
+    private Node lastNode;
+    private int size;
+
+    public void insertChain(int data,int index)throws Exception{
+        //从链表的位置0处开始插入数据
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException("超出链表节点范围！！");
+        }
+        Node insertedNode = new Node(data);
+        if(size == 0){//空链表，头节点等于尾节点
+            head = insertedNode;
+            lastNode = insertedNode;
+        }else if(index == 0){//头部插入节点
+            insertedNode.next = head;
+            head = insertedNode;
+        }else if(index == size){//尾部插入节点，将要插入的位置等于链表目前容量大小
+            lastNode.next = insertedNode;
+            lastNode = insertedNode;
+        }else{//中间插入节点
+            Node preNode = getChain(index-1);
+            insertedNode.next = preNode.next;
+            preNode.next = insertedNode;
+        }
+        size++;
+    }
+
+    public Node deleteChain(int index)throws Exception{
+        //链表从位置0开始存储数据
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("超出链表节点范围！");
+        }
+        Node deletedNode;
+        if(index == 0){//头节点
+            deletedNode = head;
+            head = head.next;
+        }else if(index == (size-1)){//尾节点
+            Node preNode = getChain(index-1);
+            deletedNode = preNode.next;
+            preNode.next = null;
+            lastNode = preNode;
+        }else{//中间节点
+            Node preNode = getChain(index-1);
+            deletedNode = preNode.next;
+            preNode.next = preNode.next.next;
+//          Node nextNode = preNode.next.next;
+//          preNode.next = nextNode;
+        }
+        size--;
+        return deletedNode;
+    }
+
+    public Node getChain(int index)throws Exception{
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("超出链表节点范围！");
+        }
+        Node tempt = head;
+        for(int i = 0;i < index;i++){
+            tempt = tempt.next;
+        }
+        return tempt;
+    }
+
+    public void output(){
+        System.out.println("Node size : "+size+";");
+        Node tempt = head;
+        int count = 0;
+        System.out.print("Node is : [");
+        while (tempt != null){
+            count++;
+            System.out.print(tempt.data);
+            if(count != size){
+                System.out.print(", ");
+            }
+            tempt = tempt.next;
+        }
+        System.out.println("].");
+    }
+```
+
+[^FindChainTN]: T(n) = O(n)
+[^InsertChainTN]:  T(n) = O(1)
+[^DeleteChainTN]:  T(n) = O(1)
+
+### 3.数组和链表的对比
+
+时间复杂度对比
+
+|      | 插入数据 | 更新数据 | 删除数据 | 查找数据 |
+| :----: | :--------: | :--------: | :--------: | :--------: |
+| 数组 | T(n) = O(n) | T(n) = O(1) | T(n) = O(n) | T(n) = O(1) |
+| 链表 | T(n) = O(1) | T(n) = O(1) | T(n) = O(1) | T(n) = O(n) |
+
+* 数组更适合读操作多，写操作少的场合；而链表更适合进行插入、删除操作，由其是在尾部频繁插入、删除数据时。
+
+### 4.栈
+
+### 5.队列
+
+### 6.散列表
 
 
 

@@ -1,6 +1,5 @@
 package com.tinyorangecat.datastruct.array.test;
 
-
 import com.tinyorangecat.datastruct.array.MyArray;
 import org.junit.Test;
 
