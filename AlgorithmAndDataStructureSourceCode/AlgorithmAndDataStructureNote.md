@@ -46,11 +46,9 @@
 
 (1).读取元素/更新元素[^ReadArrayTN]
 
-
-
 数组通过下标读取元素，这种方式被称为**随机读取**。
 
-(2).插入元素
+(2).插入元素[^InsertArrayTN]
 
 ​	1).尾部插入
 
@@ -73,12 +71,21 @@
         if(index < 1 || index > (size+1)){
             throw new ArrayIndexOutOfBoundsException("数组越界！");
         }
-        //从后往前，将数据后移一位
+        //数组达到最大容量时，进行扩容
+        if(size >= array.length){
+            arrayExpansion();
+        }
+        //从后往前，将数据后移一位，为需要插入的数据空出位置
         for(int i = size-1;i >= index-1;i--){
             array[i+1] = array[i];
         }
         array[index-1] = element;
         size++;
+    }
+	public void arrayExpansion(){
+        int []newArray = new int[array.length*2];//数组扩容
+        System.arraycopy(array,0,newArray,0,array.length);
+        array = newArray;
     }
 
 	public void output(){
@@ -92,11 +99,56 @@
         }
         System.out.print("].");
     }
+	
+	public void insertArrayFromZero(int index,int element)throws Exception{
+        //从数组的位置0插入数据，并且数组是顺序存储
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException("数组越界！！");
+        }
+        if(size >= array.length){
+            arrayExpansion();
+        }
+        for(int i = size - 1;i >= index;i--){
+            array[i+1] = array[i];
+        }
+        array[index] = element;
+        size++;
+    }
  ````
 
-
-
 [^ReadArrayTN]: T(n) = O(1)
+[^InsertArrayTn]: T(n) = O(n)
+
+(3).删除元素[^DeleteArrayTn]
+
+```java
+	public int deleteArray(int index)throws Exception{
+        //从位置“1”(也就是Java数组下标的0位置)开始删除
+        if(index < 1 || index > (size+1)){
+            throw new IndexOutOfBoundsException("数组越界！！");
+        }
+        int deleteElement = array[index-1];
+        for(int i = index - 1;i < size-1;i++){
+            array[i] = array[i+1];
+        }
+        size--;
+        return deleteElement;
+    }
+	public int deleteArrayFromZero(int index)throws Exception{
+        //数组位置以0开始
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException("数组越界！！");
+        }
+        int deleteElement = array[index];
+        for(int i = index;i < size - 1;i++){
+            array[i] = array[i+1];
+        }
+        size--;
+        return deleteElement;
+    }
+```
+
+[^DeleteArrayTn]: T(n) = O(n)
 
 ### 2.链表
 
