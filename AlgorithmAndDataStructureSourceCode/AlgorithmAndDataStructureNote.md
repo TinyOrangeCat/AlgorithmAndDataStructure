@@ -283,11 +283,118 @@
 
 ### 4.栈
 
+栈是一种线性的数据结构，栈中的元素是**先入后出**。最先入栈的元素存放位置叫做**栈底**，最后入栈的元素的存放位置叫做**栈顶**。
+
+#### (1).栈的基本操作
+
+* 出栈[^StackInOutTN]
+* 入栈[^StackInOutTN]
+
+[^StackInOutTN]: T(n) = O(1)
+
 ### 5.队列
+
+队列中的元素只能**先入先出**。
+
+#### (1).队列的基本操作
+
+* 入队[^QueueInOutTN] 队列的出口是**队头**
+
+* 出队[^QueueInOutTN] 队列的入口是**队尾**
+
+队列队尾指针指向位置永远**空出一位**，队列最大容量比数组长度小一位。
+
+**循环队列**可以解决不断的出队、入队导致的空间容量不够的问题。
+
+循环队列是指在队列容量已满[^FullQueue]时，将队尾指针重新移到队列头部。
+
+```java
+	//循环队列的实现
+	private int []array;
+    private int front;
+    private int rear;
+
+    public MyQueue(int capacity){
+        array = new int[capacity];
+    }
+
+    public void enterQueue(int element)throws Exception{
+        //a%b = a-(a/b)*b
+        if((rear+1)%array.length == front){
+            throw new IndexOutOfBoundsException("队列已满！！");
+        }
+        array[rear] = element;
+        rear = (rear + 1) % array.length;
+    }
+
+    public int outQueue()throws Exception{
+        if(rear == front){
+            throw new IndexOutOfBoundsException("空队列！！");
+        }
+        int deletedData = array[front];
+        front = (front + 1) % array.length;
+        return deletedData;
+    }
+
+    public void output(){
+        System.out.println("Queue size = "+array.length+";");
+        System.out.print("Queue:[");
+        for(int i = front; i != rear; i=(i+1)%array.length){
+            System.out.print(array[i]);
+            if((i+1)%array.length != rear){
+                System.out.print(", ");
+            }
+        }
+        System.out.println("].");
+    }
+```
+
+[^QueueInOutTN]: T(n) = O(1)
+[^FullQueue]: (队尾下标+1) % 数组长度 = 队头下标
+
+**取余运算**：a%b = a-(a/b)*b
+
+**优先队列**按照数据的优先级来决定谁先出队，优先队列基于**二叉堆**来实现。
 
 ### 6.散列表
 
+散列表也叫**哈希表**，以**键**、**值**的映射关系[^JavaKeyValue]来存储数据。
+
+哈希表将键值经过**哈希函数**的运算取得数组中的下标位置。
+
+Java HashMap的哈希函数是：index = HashCode(key)[^HashcodeInfo] % ArrayLength
+
+[^JavaKeyValue]: JDK中将Key-Value键值对叫做**Entry**。
+[^HashcodeInfo]: Java中所有的对象都有一个hashcode，且都是整型数据。
+
+#### (1).散列表的写操作
+
+通过哈希函数将key转化为下标，如果下标位置没有存数据，将数据Entry存在对应下标位置。
+
+**哈希冲突**：列表的大小是固定的，可能会出现不同的Key，但是通过哈希函数得到了相同的下标。
+
+解决哈希冲突：
+
+* 1).开放寻址法：若当前下标已有数据，则查看下一下标是否为空，若下一下标为空，则存储在此下标，若不为空，则继续查找下下一下标。
+* 2).链表法：HashMap中，每一个Entry不仅是一组数据，更是一个链表的头节点，每一个Entry通过next指针指向下一个Entry；当新的Entry在映射存储位置发生冲突时，可将新的Entry插入链表即可。
+
+#### (2).散列表的读操作
+
+通过哈希函数将key转化为下标，对比链表的头节点位置上的Entry的key是否一致，若不一致，则遍历链表的下一节点，若key一致，则返回value。
+
+#### (3).散列表的扩容
+
+散列表扩容的必要性：数据的增多会使哈希冲突发生的概率提高，导致相同的下标下存储着大量的元素，形成长链表，影响散列表的插入、读取性能。
+
+HashMap的扩容[^HashExpansionCondition]：
+
+* 1).扩容：新建一个数组，长度为原来的2倍。
+* 2).**重新Hash**：因为数组长度有变，所以Hash规则也随之改变，需要遍历原数组的Entry，重新使用哈希函数将Entry存放在新的数组中。
 
 
 
+[^HashExpansionCondition]: HashMap的扩容条件是：HashMap.size >=  Capacity(HashMap的当前长度) * LoadFactor(HashMap负载因子：默认为0.75f)
 
+
+
+## 三、树
