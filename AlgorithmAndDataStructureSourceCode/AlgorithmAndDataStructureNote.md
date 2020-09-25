@@ -398,3 +398,199 @@ HashMap的扩容[^HashExpansionCondition]：
 
 
 ## 三、树
+
+### 1.树
+
+**树**是n(n>=0)个节点的有限集。当n=0时，称为空树。一个非空树有如下特点：
+
+* (1).有且仅有一个特定的根的节点；
+* (2).当n>1时，其余节点可以分为m(m>0)个不相交的有限集合，每一个集合本身又是树，称为根的**子树**。
+
+树末端的节点被称为**叶子节点**；树的最大层数被称为树的**高度**、**深度**。
+
+### 2.二叉树
+
+#### (1).什么是二叉树
+
+二叉树的每个节点最多有两个孩子节点。
+
+二叉树可以采用**链式存储结构**、**数组**的方式进行存储（但比较浪费空间）。
+
+二叉树的应用：主要应用与**查找操作和维持相对顺序**。
+
+#### (2).满二叉树与完全二叉树
+
+**满二叉树**：一个二叉树的非叶子节点均有左右孩子，并且所有的叶子节点均在同一层级。
+
+**完全二叉树**：对于一个有n个节点的二叉树，按层级顺序编号，则所有层级编号为从1到n。如果二叉树的所有节点编号和同样深度的满二叉树的编号从1到n位置相同，则称为完全二叉树。
+
+#### (3).二叉树的应用
+
+二叉树的应用：主要应用与**查找操作和维持相对顺序**。
+
+* 二叉查找树[^BinaryTreeFindTN]：如果左子树不为空，则左子树上所有节点的值均小于根节点的值；如果右子树不为空，则右子树上所有节点的值均大于根节点的值；左右子树都是二叉查找树。
+* 维持相对顺序：如二叉查找树，要维持新插入数据不影响二叉树的结构，需要二叉树的**自平衡**（如红黑树、AVL树、树堆等）。
+
+
+
+[^BinaryTreeFindTN]: T(n) = O(logn)
+
+#### (4).二叉树的遍历
+
+从节点之间的位置关系来分，二叉树的遍历可分为：
+
+##### 1).前序遍历
+
+根 ——> 左  ——> 右
+
+##### 2).中序遍历
+
+左 ——> 根  ——> 右
+
+##### 3).后序遍历
+
+左 ——> 右  ——> 根
+
+##### 4).层序遍历
+
+从宏观角度来看，二叉树的遍历可分为：
+
+##### 1).深度优先遍历
+
+前序遍历、中序遍历、中序遍历。
+
+##### 2).广度优先遍历
+
+层序遍历。
+
+```java
+	public static class BinaryTreeNode{
+        int data;
+        private BinaryTreeNode leftNode;
+        private BinaryTreeNode rightNode;
+
+        BinaryTreeNode(int data){
+            this.data = data;
+        }
+    }
+
+    public BinaryTreeNode createBinaryTree(LinkedList<Integer> binaryTreeArray){
+        BinaryTreeNode tree = null;
+        if(binaryTreeArray == null || binaryTreeArray.isEmpty()){
+            return null;
+        }
+        Integer data = binaryTreeArray.removeFirst();
+        if(data != null){
+            tree = new BinaryTreeNode(data);
+            tree.leftNode = createBinaryTree(binaryTreeArray);
+            tree.rightNode = createBinaryTree(binaryTreeArray);
+        }
+        return tree;
+    }
+
+    public void preOrderTraversal(BinaryTreeNode tree){//前序遍历
+        if(tree == null){
+            return;
+        }
+        System.out.print(tree.data+" ");
+        preOrderTraversal(tree.leftNode);
+        preOrderTraversal(tree.rightNode);
+    }
+
+    public void preOrderTraversalByStack(BinaryTreeNode tree){//前序遍历
+        if(tree == null){
+            return;
+        }
+        Stack<BinaryTreeNode> nodeStack = new Stack<BinaryTreeNode>();
+
+        while (tree != null || !nodeStack.isEmpty()){
+            while (tree != null){
+                System.out.print(tree.data+" ");
+                nodeStack.push(tree);
+                tree = tree.leftNode;
+            }
+            if(!nodeStack.isEmpty()){
+                tree = nodeStack.pop();
+                tree = tree.rightNode;
+            }
+        }
+
+    }
+
+    public void midOrderTraversal(BinaryTreeNode tree){//中序遍历
+        if(tree == null){
+            return;
+        }
+        midOrderTraversal(tree.leftNode);
+        System.out.print(tree.data+" ");
+        midOrderTraversal(tree.rightNode);
+    }
+
+    public void midOrderTraversalByStack(BinaryTreeNode tree){//中序遍历
+        if(tree == null){
+            return;
+        }
+        Stack<BinaryTreeNode> nodeStack = new Stack<BinaryTreeNode>();
+
+        while (tree != null || !nodeStack.isEmpty()){
+            while (tree != null){
+                nodeStack.push(tree);
+                tree = tree.leftNode;
+            }
+            if(!nodeStack.isEmpty()){
+                tree = nodeStack.pop();
+                System.out.print(tree.data+" ");
+                tree = tree.rightNode;
+            }
+        }
+
+    }
+
+    public void postOrderTraversal(BinaryTreeNode tree){//后序遍历
+        if(tree == null){
+            return;
+        }
+        postOrderTraversal(tree.leftNode);
+        postOrderTraversal(tree.rightNode);
+        System.out.print(tree.data+" ");
+    }
+
+    public void postOrderTraversalByStack(BinaryTreeNode tree){//后序遍历，未完待续。。。
+        if(tree == null){
+            return;
+        }
+        Stack<BinaryTreeNode> nodeStack = new Stack<BinaryTreeNode>();
+
+        while (tree != null || !nodeStack.isEmpty()){
+            
+        }
+    }
+
+    public void levelOrderTraversal(BinaryTreeNode tree){//层序遍历
+        if(tree == null){
+            return;
+        }
+        Queue<BinaryTreeNode> queue = new LinkedList<BinaryTreeNode>();
+        queue.offer(tree);
+        while (!queue.isEmpty()){
+            BinaryTreeNode binaryTreeNode = queue.poll();
+            System.out.print(binaryTreeNode.data+" ");
+            if(binaryTreeNode.leftNode != null){
+                queue.offer(binaryTreeNode.leftNode);
+            }
+            if(binaryTreeNode.rightNode != null){
+                queue.offer(binaryTreeNode.rightNode);
+            }
+        }
+
+    }
+```
+
+
+
+### 3.二叉堆
+
+
+
+### 4.优先队列
+
