@@ -614,7 +614,41 @@ HashMap的扩容[^HashExpansionCondition]：
 构建二叉堆就是把一个无序的二叉树构建为二叉堆，即**让所有非叶子节点依次下沉**。从完全二叉树的最后一个节点开始进行“上浮”、“下沉”调整。
 
 ```java
+	//以下均是构建最小堆
+	public static void buildBinaryHeap(int []array){
+        for(int i = (array.length-2)/2;i >= 0;i--){//从最后一个非叶子节点开始下沉
+            goDown(array,i,array.length);
+        }
+    }
 
+    public static void floatUpward(int []array){
+        int childIndex = array.length - 1;
+        int parentIndex = (childIndex-1)/2;
+        int temp = array[childIndex];
+        while (childIndex > 0 && temp < array[parentIndex]){
+            array[childIndex] = array[parentIndex];
+            childIndex = parentIndex;
+            parentIndex = (parentIndex-1)/2;
+        }
+        array[childIndex] = temp;
+    }
+
+    public static void goDown(int []array,int parentIndex,int length){
+        int temp = array[parentIndex];
+        int childIndex = parentIndex*2+1;
+        while (childIndex < length){
+            if(childIndex+1 < length && array[childIndex+1] < array[childIndex]){//右孩子应小于左孩子
+                childIndex++;
+            }
+            if(temp <= array[childIndex]){//最小堆，父节点小于左、右孩子
+                break;
+            }
+            array[parentIndex] = array[childIndex];//较小数上浮到父节点
+            parentIndex = childIndex;
+            childIndex = parentIndex*2 + 1;
+        }
+        array[parentIndex] = temp;
+    }
 ```
 
 
@@ -646,7 +680,7 @@ HashMap的扩容[^HashExpansionCondition]：
 堆顶出队，末尾叶子节点顶替原先堆顶，进行下沉操作。
 
 ```java
-
+	
 ```
 
 

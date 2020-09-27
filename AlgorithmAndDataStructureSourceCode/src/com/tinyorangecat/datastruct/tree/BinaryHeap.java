@@ -10,7 +10,7 @@ public class BinaryHeap {
      * @Return void
      **/
     public static void buildBinaryHeap(int []array){
-        for(int i = (array.length-2)/2;i >= 0;i--){
+        for(int i = (array.length-2)/2;i >= 0;i--){//从最后一个非叶子节点开始下沉
             goDown(array,i,array.length);
         }
     }
@@ -38,22 +38,22 @@ public class BinaryHeap {
      * @Author TinyOrangeCat
      * @Date 2020/9/27 13:59
      * @Description Go down a binary heap.
-     * @Param array
-     * @Param parentIndex
-     * @Param length
-     * @Return
+     * @Param array The array that needs to be adjusted.
+     * @Param parentIndex The parent index of a child tree.
+     * @Param length The numbers of heap's elements.
+     * @Return void
      **/
     public static void goDown(int []array,int parentIndex,int length){
         int temp = array[parentIndex];
         int childIndex = parentIndex*2+1;
-        while (childIndex < array.length){
-            if(childIndex+1 < array.length && array[childIndex+1] < array[childIndex]){
+        while (childIndex < length){
+            if(childIndex+1 < length && array[childIndex+1] < array[childIndex]){//右孩子应小于左孩子
                 childIndex++;
             }
-            if(temp <= array[childIndex]){
+            if(temp <= array[childIndex]){//最小堆，父节点小于左、右孩子
                 break;
             }
-            array[parentIndex] = array[childIndex];
+            array[parentIndex] = array[childIndex];//较小数上浮到父节点
             parentIndex = childIndex;
             childIndex = parentIndex*2 + 1;
         }
