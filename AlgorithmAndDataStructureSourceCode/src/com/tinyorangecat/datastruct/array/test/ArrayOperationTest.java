@@ -53,4 +53,20 @@ public class ArrayOperationTest {
         //array.deleteArray(2);
         array.output();
     }
+
+    @Test
+    public void otherTest()throws Exception{
+        TheArray array = new TheArray(5);
+        array.insertArray(0,3);
+        array.insertArray(1,1);
+        array.insertArray(2,2);
+        array.insertArray(3,5);
+        array.insertArray(4,4);
+        array.insertArray(5,9);
+        array.output();
+        System.out.println("Delete array index 3 : "+array.deleteArray(3));
+        array.output();
+        array.insertArray(4,6);
+        array.output();
+    }
 }

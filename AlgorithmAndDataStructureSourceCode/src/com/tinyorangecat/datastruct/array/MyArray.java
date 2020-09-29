@@ -6,7 +6,6 @@ public class MyArray {
     private int []array;
     private int size;
 
-
     public MyArray(int capacity){
         this.array = new int[capacity];
         this.size = 0;
@@ -113,7 +112,7 @@ public class MyArray {
      **/
     public int deleteArrayFromZero(int index)throws Exception{
         //数组位置以0开始
-        if(index < 0 || index > size){
+        if(index < 0 || index >= size){
             throw new IndexOutOfBoundsException("数组越界！！");
         }
         int deleteElement = array[index];

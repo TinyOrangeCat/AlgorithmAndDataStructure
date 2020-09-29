@@ -70,4 +70,15 @@ public class BinaryHeapOperationTest {
         floatUpward(array);
         System.out.println(Arrays.toString(array));
     }
+
+    @Test
+    public void reviewTest(){
+        int []array = {7,1,3,10,5,2,8,9,6};
+        TheBinaryHeap.createBinaryHeap(array);
+        //int []binaryHeap = buildBinaryHeap();
+        System.out.println(Arrays.toString(array));
+        int []array2 = {1,3,2,6,5,7,8,9,10,0};
+        TheBinaryHeap.floatForward(array2);
+        System.out.println(Arrays.toString(array2));
+    }
 }

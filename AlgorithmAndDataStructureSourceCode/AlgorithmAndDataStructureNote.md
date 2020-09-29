@@ -763,3 +763,62 @@ HashMap的扩容[^HashExpansionCondition]：
 
 ## 四、排序算法
 
+排序算法按稳定性可分为**稳定排序**（值相同的元素排序前后顺序不变）和**不稳定排序**（值相同的元素排序前后顺序被打乱）。
+
+### 1.引言
+
+#### (1).时间复杂度为O(n<sup>2</sup>)的排序算法
+
+* **冒泡排序**
+* **选择排序**
+* **插入排序**
+* **希尔排序**
+
+
+
+#### (2).时间复杂度为O(nlogn)的排序算法
+
+* **快速排序**
+* **归并排序**
+* **堆排序**
+
+
+
+#### (3).时间复杂度为线性的排序算法
+
+* **计数排序**
+* **桶排序**
+* **基数排序**
+
+
+
+### 2.冒泡排序
+
+冒泡排序是一种**稳定排序**。
+
+```java
+public class BubbleSort {
+    public static void sort(int []array){
+        //从小到大进行冒泡排序
+        int lastExchangeIndex = 0;//记录上次交换位置
+        int sortBorder = array.length - 1;//进行排序的边界
+        for(int i = 0;i < array.length;i++){
+            boolean isSorted = true;
+            for(int j = 0;j < sortBorder;j++){//冒泡排序已排序过的位置，不需要再进行排序
+                if(array[j] > array[j+1]){//前一个数大于后一个数，进行数据交换
+                    int tempt = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = tempt;
+                    isSorted = false;//记录此次排序是无序的
+                    lastExchangeIndex = j;//记录最后交换数据的位置
+                }
+            }
+            sortBorder = lastExchangeIndex;
+            if(isSorted){//若上次已是有序状态、没有进行数据换位，则无需进行后续排序
+                break;
+            }
+        }
+    }
+}
+```
+

@@ -31,4 +31,35 @@ public class QueueOperationTest {
         queue.enterQueue(7);
         queue.output();
     }
+
+    @Test
+    public void other()throws Exception{
+        TheQueue queue = new TheQueue(6);
+        queue.enQueue(3);
+        queue.enQueue(5);
+        queue.enQueue(6);
+        queue.enQueue(8);
+        queue.enQueue(1);
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        queue.enQueue(10);
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+        queue.enQueue(9);
+        queue.output();
+        System.out.println("De queue is :"+queue.deQueue());
+        queue.output();
+//        System.out.println("De queue is :"+queue.deQueue());
+//        queue.output();
+    }
 }

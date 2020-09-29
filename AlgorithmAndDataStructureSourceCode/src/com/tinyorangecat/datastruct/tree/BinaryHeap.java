@@ -47,7 +47,7 @@ public class BinaryHeap {
         int temp = array[parentIndex];
         int childIndex = parentIndex*2+1;
         while (childIndex < length){
-            if(childIndex+1 < length && array[childIndex+1] < array[childIndex]){//右孩子应小于左孩子
+            if(childIndex+1 < length && array[childIndex+1] < array[childIndex]){//找到最小的孩子节点(右孩子应小于左孩子）
                 childIndex++;
             }
             if(temp <= array[childIndex]){//最小堆，父节点小于左、右孩子

@@ -28,4 +28,18 @@ public class ChainOperationTest {
         chain.output();
     }
 
+    @Test
+    public void other()throws Exception{
+        TheChain chain = new TheChain();
+        chain.insertChain(3,0);
+        chain.insertChain(7,1);
+        chain.insertChain(9,2);
+        chain.insertChain(5,3);
+        chain.output();
+        chain.insertChain(4,1);
+        chain.output();
+        System.out.println("Delete the chain index = 1 is : "+chain.deleteChain(1));
+        chain.output();
+    }
+
 }
