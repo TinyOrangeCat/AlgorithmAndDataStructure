@@ -796,6 +796,8 @@ HashMap的扩容[^HashExpansionCondition]：
 
 冒泡排序是一种**稳定排序**。
 
+左-->右比较排序。
+
 ```java
 public class BubbleSort {
     public static void sort(int []array){
@@ -821,4 +823,162 @@ public class BubbleSort {
     }
 }
 ```
+
+
+
+### 3.鸡尾酒排序
+
+左-->右，右-->左。
+
+```java
+public class CocktailSort {
+
+    public static void sort(int []array){
+        //因为是鸡尾酒排序，从左到右，从右到左进行比对，已经对比好的首尾位置不用进行第二次对比，故最终需要比对的次数就就是数组总长的一半
+        for (int i = 0;i < array.length/2;i++){
+            boolean isSorted = true;
+            //左到右
+            for(int j = i;j < array.length-i-1;j++){
+                if(array[j] > array[j+1]){
+                    int tempt = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = tempt;
+                    isSorted = false;
+                }
+            }
+            if(isSorted){
+                break;
+            }
+            isSorted = true;
+            //右到左
+            for(int j = array.length-i-1;j > i;j--){
+                if(array[j] < array[j-1]){
+                    int tempt = array[j-1];
+                    array[j-1] = array[j];
+                    array[j] = tempt;
+                    isSorted = false;
+                }
+            }
+            if(isSorted){
+                break;
+            }
+        }
+
+    }
+}
+```
+
+
+
+### 4.快速排序
+
+冒泡排序和快速排序都是**交换排序**。、
+
+快速排序采用**分治法**进行排序，每一轮中挑选一个基准元素，比基准元素大的元素被分到一边，比基准元素小的元素被分到另一边。
+
+#### (1).基准元素的选择
+
+随机选择一个基准元素，将基准元素和头元素交换位置。
+
+#### (2).元素的交换
+
+* 双边循环法
+
+选定基准元素，数组两端定义左、右指针，先对比右指针，若右指针数小于基准数，则右指针停止，开始对比左指针数，若左指针数大于
+
+基准元素，左指针停止，左右指针对比，右小于左，则交换元素，右指针向左移动，继续比较，最后左右指针重合，基准元素与重合元素交换。
+
+* 单边循环法
+
+选定基准元素，数组首端定义mark指针，向后遍历元素，如果有元素小于基准元素，mark指针右移，mark指针位置和对比位置交换。
+
+```java
+	public static void doubleCirculationSort(int []array,int startIndex,int endIndex){
+        if(startIndex >= endIndex){
+            return;
+        }
+        int pivotIndex = doublePartition(array,startIndex,endIndex);
+        doubleCirculationSort(array,startIndex,pivotIndex - 1);
+        doubleCirculationSort(array,pivotIndex + 1,endIndex);
+    }
+
+    private static int doublePartition(int []array,int startIndex,int endIndex){
+        //双边循环法
+        int pivot = array[startIndex];//选取头元素作为基准数
+        int leftPointer = startIndex;
+        int rightPinter = endIndex;
+        while (leftPointer != rightPinter){//左、右指针不重合，数组未遍历完毕
+            while (leftPointer < rightPinter && array[rightPinter]>pivot){//先操作右指针左移
+                rightPinter--;
+            }
+            while (leftPointer < rightPinter && array[leftPointer] <= pivot){//操作左指针右移
+                leftPointer++;
+            }
+            if(leftPointer < rightPinter){
+                int temp = array[rightPinter];
+                array[rightPinter] = array[leftPointer];
+                array[leftPointer] = temp;
+            }
+        }
+        //左、右指针重合，交换指针位置元素与头元素
+        array[startIndex] = array[leftPointer];
+        array[leftPointer] = pivot;
+        return leftPointer;
+    }
+
+    public static void unilateralCirculationSort(int []array,int startIndex,int endIndex){
+        if(startIndex >= endIndex){
+            return;
+        }
+        int pivotIndex = unilateralPartition(array,startIndex,endIndex);
+        unilateralCirculationSort(array,startIndex,pivotIndex-1);
+        unilateralCirculationSort(array,pivotIndex+1,endIndex);
+    }
+
+    private static int unilateralPartition(int []array,int startIndex,int endIndex){
+        //单边循环法
+        int pivot = array[startIndex];
+        int mark = startIndex;
+        for(int i = startIndex;i <= endIndex;i++){
+            if(array[i] < pivot){
+                mark++;//指针右移
+                //指针位置与对比位置交换
+                int temp = array[mark];
+                array[mark] = array[i];
+                array[i] = temp;
+            }
+        }
+        //数组遍历一轮结束，指针位置数据与基准数交换
+        array[startIndex] = array[mark];
+        array[mark] = pivot;
+        return mark;
+    }
+
+    public static void unilateralCirculationSortByStack(int []array,int startIndex,int endIndex){
+        //使用非递归的方式实现单边循环快速查找
+        Stack<Map<String,Integer>> quickSortStack = new Stack<Map<String,Integer>>();
+        Map<String,Integer> indexMap = new HashMap<String,Integer>();
+        indexMap.put("startIndex",startIndex);
+        indexMap.put("endIndex",endIndex);
+        quickSortStack.push(indexMap);
+        while (!quickSortStack.isEmpty()){
+            Map<String,Integer> paramMap = quickSortStack.pop();
+            int pivotIndex = unilateralPartition(array,paramMap.get("startIndex"),paramMap.get("endIndex"));
+            if(paramMap.get("startIndex") < pivotIndex - 1){
+                Map<String,Integer> leftParam = new HashMap<String,Integer>();
+                leftParam.put("startIndex",paramMap.get("startIndex"));
+                leftParam.put("endIndex",pivotIndex-1);
+                quickSortStack.push(leftParam);
+            }
+            if(paramMap.get("endIndex") > pivotIndex + 1){
+                Map<String,Integer> rightParam = new HashMap<String,Integer>();
+                rightParam.put("startIndex",pivotIndex+1);
+                rightParam.put("endIndex",paramMap.get("endIndex"));
+                quickSortStack.push(rightParam);
+            }
+        }
+    }
+```
+
+
 
