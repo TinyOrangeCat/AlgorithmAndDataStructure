@@ -47,7 +47,7 @@ public class TheQuickSort {
     private static int unilateralCirculationPartition(int []array,int startIndex,int endIndex){
         int mark = startIndex;
         int pivot = array[startIndex];
-        for(int i = endIndex;i >= mark;i--){
+        for(int i = startIndex+1;i <= endIndex;i++){
             if(array[i] < pivot){
                 mark++;
                 int temp = array[mark];

@@ -939,7 +939,7 @@ public class CocktailSort {
         //单边循环法
         int pivot = array[startIndex];
         int mark = startIndex;
-        for(int i = startIndex;i <= endIndex;i++){
+        for(int i = startIndex+1;i <= endIndex;i++){
             if(array[i] < pivot){
                 mark++;//指针右移
                 //指针位置与对比位置交换
@@ -980,5 +980,176 @@ public class CocktailSort {
     }
 ```
 
+### 5.堆排序
+
+从大到小，构建最小堆；从小到大，构建最大堆。
+
+```java
+public class HeapSort {
+
+    public static void sort(int []array){
+        //从大到小进行堆排序
+        for(int i = (array.length - 2)/2;i >= 0;i--){
+            goDown(array,i,array.length);//建最小堆
+        }
+        //堆顶最小的数置于数组末尾，并重新建最小堆
+        for(int i = array.length - 1;i > 0;i--){
+            int temp = array[i];
+            array[i] = array[0];
+            array[0] = temp;
+            goDown(array,0,i);
+        }
+
+    }
+
+    private static void goDown(int []array,int parentIndex,int length){
+        int childIndex = parentIndex*2+1;
+        int temp = array[parentIndex];
+        while(childIndex < length){
+            if(childIndex+1 < length && array[childIndex+1] < array[childIndex]){
+                childIndex++;
+            }
+            if(temp <= array[childIndex]){
+                break;
+            }
+            array[parentIndex] = array[childIndex];
+            parentIndex = childIndex;
+            childIndex = parentIndex*2+1;
+        }
+        array[parentIndex] = temp;
+    }
+}
+
+```
 
 
+
+### 6.计数排序
+
+```java
+	public static void sort(int []array){
+        //从大到小进行堆排序
+        //得到最大元素
+        int biggest = array[0];
+        for(int i = 0;i < array.length;i++){
+            if(array[i]>biggest){
+                biggest = array[i];
+            }
+        }
+        int []countArray = new int[biggest+1];//计数数组
+        for(int i = 0;i < array.length;i++){
+            countArray[array[i]]++;
+        }
+        //遍历计数数组，将不为0的计数数组下标转存到结果数组
+        int index = 0;
+        for(int i = countArray.length-1;i >= 0;i--){
+            for(int j = 0;j < countArray[i];j++){
+                array[index++] = i;
+            }
+        }
+    }
+```
+
+
+
+前一个计数排序比较占用内存，而且在遇到相同的元素时，会打乱相同元素的顺序，下面改进后的计数排序是**顺序排序**且占用内存较小。
+
+选出最大、最小数（偏移量min），创建计数数组（最大数-最小数+1=计数数组长度），数组a中每一个数减去偏移量得到计数数组下标i，计数数组c对应下标位置j的数加1，数组遍历完成后，计数数组从下标1开始与上一下标位置上的数相加，并将结果重新赋值进对应计数数组下标位置。最后再次遍历数组（c[j] = c[j] + c[j-1]），值a[i]减去偏移量（min）得到index，计数数组中对应index的数值就代表数组a[i]的排序位置（排序位置 = c[a[i] - min]），最后将刚刚访问的计数数组对应下标的值减1。
+
+```java
+	public static int[] improveSort(int []array){
+        //从小到大排序
+        int biggest = array[0];
+        int smallest = array[0];//偏移量
+        for(int i = 0;i < array.length;i++){
+            if(array[i]>biggest){
+                biggest = array[i];
+            }
+            if(array[i] < smallest){
+                smallest = array[i];
+            }
+        }
+        int []countArray = new int[biggest-smallest+1];
+        for(int i = 0;i < array.length;i++){
+            countArray[(array[i]-smallest)]++;
+        }
+        //从数组1下标开始，计数数组值两两相加
+        for(int i = 1;i < countArray.length;i++){
+            countArray[i] = countArray[i]+countArray[i-1];
+        }
+        int []resultArray = new int[array.length];
+        //countArray中的数就是对应array中每个数的排序次序
+        for(int i = 0;i < array.length;i++){
+            resultArray[countArray[array[i]-smallest]-1] = array[i];
+            countArray[array[i]-smallest]--;//countArray对应位置下存的一组数少一个
+        }
+        return resultArray;
+    }
+```
+
+
+
+### 7.桶排序
+
+计数排序只能针对整数进行排序；而且当数组数值相差较大时，计数排序并不适合。
+
+**桶的区间跨度 = （最大值 - 最小值）/（桶的数量 - 1）**
+
+```java
+public class BucketSort {
+
+    public static void sort(double []array){
+        //从小到大进行桶排序
+        double biggest = array[0];
+        double smallest = array[0];
+        for(int i = 0;i <array.length;i++){
+            if(array[i] > biggest){
+                biggest = array[i];
+            }
+            if(array[i]< smallest){
+                smallest = array[i];
+            }
+        }
+        double d = biggest - smallest;
+        int bucketNum = array.length;
+        //创建桶
+        ArrayList<LinkedList<Double>> buckets = new ArrayList<LinkedList<Double>>(bucketNum);
+        for(int i = 0;i < bucketNum;i++){
+            buckets.add(new LinkedList<Double>());
+        }
+        //在桶中装入数据
+        for(int i = 0;i < array.length;i++){
+            int num = (int)((array[i]-smallest)*(bucketNum-1)/d);
+            buckets.get(num).add(array[i]);
+        }
+        //对桶中数据进行排序
+        for(int i = 0;i < buckets.size();i++){
+            Collections.sort(buckets.get(i));
+        }
+        //输出桶中数据
+        int index = 0;
+        for(LinkedList<Double> bucket : buckets){
+            for(Double data : bucket){
+                array[index++] = data;
+            }
+        }
+    }
+}
+```
+
+
+
+### 8.小结
+
+| 排序 | 平均时间复杂度 | 最坏时间复杂度 | 空间复杂度 | 是否稳定排序 |
+| :----: | :--------------: | :--------------: | :----------: | :------------: |
+| 冒泡排序 | O(n<sup>2</sup>) | O() | O() | 稳定 |
+| 鸡尾酒排序 | O() | O() | O() | 稳定 |
+| 快速排序 | O() | O() | O() | 不稳定 |
+| 堆排序 | O() | O() | O() | 不稳定 |
+| 计数排序 | O() | O() | O() | 稳定 |
+| 桶排序 | O() | O() | O() | 稳定 |
+
+
+
+## 五、面试中的算法
