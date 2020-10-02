@@ -1217,11 +1217,43 @@ P2每次比P1多走一步，在P1、P2第一次相遇时，两指针继续前进
 
 实现一个栈，有出栈（pop），入栈（push），取最小元素（getMin），且时间复杂都是O(1)。
 
+注：取最小值只是需要知道当前栈内的最小元素是什么，不是说最小元素需要出栈。
+
 解法：
 
 新建两个栈（mainStack，minStack），每次入栈先进mainStack，再将值与minStack栈顶进行比较，如果值小于minStack栈，则该值也进入minStack。
 
 ```java
+public class MinimumStack {
+    static Stack<Integer> mainStack = new Stack<Integer>();//主栈
+    static Stack<Integer> minStack = new Stack<Integer>();//最小栈
 
+    public void push(int data){
+        mainStack.push(data);//所有元素均进主栈
+        //若最小栈顶元素大于当前元素，则该元素也应该进最小栈
+        if(minStack.isEmpty() || minStack.peek() > data){
+            minStack.push(data);
+        }
+    }
+
+    public Integer pop(){
+        //主栈栈顶元素与最小栈栈顶元素相同，则最小栈也应出栈
+        if(mainStack.peek().equals(minStack.peek())){
+            minStack.pop();
+        }
+        return mainStack.pop();
+    }
+
+    public Integer getMin() throws Exception{
+        if(minStack.isEmpty()){
+            throw new IndexOutOfBoundsException("最小栈为空！");
+        }
+        return minStack.peek();
+    }
+
+}
 ```
 
+
+
+### 3.如何求出最大公约数
