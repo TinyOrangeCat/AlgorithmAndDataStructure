@@ -1153,3 +1153,75 @@ public class BucketSort {
 
 
 ## 五、面试中的算法
+
+### 1.如何判断一个链表有环
+
+有一个单身链表，如何判断链表中是否出现了环？
+
+​                        1 &larr; 8
+
+​						&darr;		&uarr;
+
+5 &rarr; 3 &rarr; 7 &rarr; 2 &rarr; 6
+
+解法：创建两个指针，P1、P2，P1每次操作向前移1位，P2每次操作向前移2位，若干次操作后，若P1指针与P2指针重合，则说明链表有环。
+
+```java
+public class CycleChain {
+    public static class Node{
+        public int data;
+        public Node next;
+
+        public Node(int data){
+            this.data = data;
+        }
+
+        @Override
+        public String toString(){
+            return String.valueOf(data);
+        }
+    }
+
+    public static boolean hasCycleChain(Node chain){
+        if(chain == null){
+            return false;
+        }
+        Node pointerOne = chain;
+        Node pointerTwo = chain;
+        while (pointerOne != null && pointerTwo != null){
+            pointerOne = pointerOne.next;
+            pointerTwo = pointerTwo.next.next;
+            if(pointerOne == pointerTwo){
+                return true;
+            }
+        }
+        return false;
+    }
+```
+
+
+
+扩展问题：
+
+* 如果链表有环，如何求出环的长度？
+
+P2每次比P1多走一步，在P1、P2第一次相遇时，两指针继续前进，记录前进次数直到P1、P2再次相遇，此时P2比P1多走整整一圈。
+
+环长 = 速差 * 前进次数
+
+* 如果链表有环，如何求出入环节点？
+
+首次相遇后，将其中一个指针放到起点，然后两指针同时每次前进一步，再次相遇的位置就是入环节点。
+
+### 2.最小栈的实现
+
+实现一个栈，有出栈（pop），入栈（push），取最小元素（getMin），且时间复杂都是O(1)。
+
+解法：
+
+新建两个栈（mainStack，minStack），每次入栈先进mainStack，再将值与minStack栈顶进行比较，如果值小于minStack栈，则该值也进入minStack。
+
+```java
+
+```
+
