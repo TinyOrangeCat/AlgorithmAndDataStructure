@@ -1257,3 +1257,107 @@ public class MinimumStack {
 
 
 ### 3.如何求出最大公约数
+
+求出两个数的最大公约数。
+
+```java
+public class GreatestCommonDivision {
+
+    public static int getGreatestCommonDivision1(int a,int b){
+        int big = a > b ? a : b;
+        int small = b < a ? b : a;
+        if(big % small == 0){
+            return small;
+        }
+        for(int i = small/2;i > 1;i--){
+            if(big % i == 0 && small % i ==0){
+                return i;
+            }
+        }
+        return 1;
+    }
+
+    public static int getGreatestCommonDivision2(int a,int b){
+        //辗转相除法（欧几里德法，整数a和b(a>b)的最大公约数等于，a和b的相除的余数c和最小数b的最大公约数）
+        int big = a > b ? a : b;
+        int small = b < a ? b : a;
+        if(big % small == 0){
+            return small;
+        }
+        return getGreatestCommonDivision2(big % small,small);
+    }
+
+    public static int getGreatestCommonDivision3(int a,int b){
+        //更相减损术（整数a和b(a>b)的最大公约数等于，a和b的差值c和最小数b的最大公约数）
+        int big = a > b ? a : b;
+        int small = b < a ? b : a;
+        if(big == small){
+            return big;
+        }
+        return getGreatestCommonDivision3(big-small,small);
+    }
+
+    public static int getGreatestCommonDivision4(int a,int b){
+        //辗转相除法+更相减损术
+        //&运算：同1则1，否则为0
+        int big = a > b ? a : b;
+        int small = b < a ? b : a;
+        if(big == small){
+            return big;
+        }
+        if((big & 1) == 0 && (small&1) == 0){
+            return getGreatestCommonDivision4(big>>1,small >>1)<<1;
+        }else if((big & 1) == 0 && (small&1) != 0){
+            return getGreatestCommonDivision4(big>>1,small);
+        }else if((big & 1) != 0 && (small&1) == 0){
+            return getGreatestCommonDivision4(big,small>>1);
+        }else{
+            return getGreatestCommonDivision4(big-small,small);
+        }
+    }
+}
+```
+
+### 4.2的整数次幂
+
+如何判断一个数是否为2的整数次幂？
+
+```java
+public class PowerOf2 {
+
+    public static boolean isPowerOf2V1(int num){
+        //T(n) = O(logn)
+        int temp = 1;
+        while(temp <= num){
+            if (temp == num){
+                return true;
+            }
+            temp *= 2;
+        }
+        return false;
+    }
+
+    public static boolean isPowerOf2V2(int num){
+        //T(n) = O(logn)
+        int temp = 1;
+        while(temp <= num){
+            if (temp == num){
+                return true;
+            }
+            temp <<= 1;
+        }
+        return false;
+    }
+
+    public static boolean isPowerOf2V3(int num){
+        //T(n) = O(1)
+        //所有2的整数次幂的二进制最高位为1，其他位均为0，且其二进制数减1后所有位均为1。
+        return (num&num-1)==0;
+    }
+}
+```
+
+
+
+### 3.无序数组排序后的最大相邻差
+
