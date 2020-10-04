@@ -1361,3 +1361,107 @@ public class PowerOf2 {
 
 ### 3.无序数组排序后的最大相邻差
 
+有一个无序整型数组，如何求出该数组排序后的任意两个相邻元素的最大差值？
+
+无序数组：2 6 3 9 5 10 9
+
+排序结果：2 3 4 5 6  9 10
+
+​                                 &darr;   &darr;
+
+​                            最大差值：3
+
+解法：桶排序，桶的最大值和右侧最小值的最大差值既是结果。
+
+```java
+public class GetTheBiggestDifference {
+    private static class Bucket{
+        Integer max;
+        Integer min;
+    }
+
+    public static int getTheTheBiggestSortedDifference(int []array){
+        if(array == null){
+            return 0;
+        }
+        int max = array[0];
+        int min = array[0];
+        for(int i = 0;i < array.length;i++){
+            if(array[i] > max){
+                max = array[i];
+            }
+            if(array[i] < min){
+                min = array[i];
+            }
+        }
+        int d = max - min;
+        if(d == 0){
+            return 0;
+        }
+        int bucketNum = array.length;
+        Bucket []buckets = new Bucket[bucketNum];
+        for(int i = 0;i < bucketNum;i++){
+            buckets[i] = new Bucket();
+        }
+        for(int i = 0;i < array.length;i++){
+            int index = ((array[i] - min)*(bucketNum - 1)/d);
+            if(buckets[index].min == null || buckets[index].min > array[i]){
+                buckets[index].min = array[i];
+            }
+            if(buckets[index].max == null || buckets[index].max < array[i]){
+                buckets[index].max = array[i];
+            }
+        }
+
+        //左桶最大值减去右桶最小值
+        int leftMax = buckets[0].max;
+        int maxDifference = 0;
+        for(int i = 1;i < buckets.length;i++){
+            if(buckets[i].min == null){
+                continue;
+            }
+            if(buckets[i].min - leftMax > maxDifference){
+                maxDifference = buckets[i].min - leftMax;
+            }
+            leftMax = buckets[i].max;
+        }
+        return maxDifference;
+    }
+}
+```
+
+### 4.如何用栈实现队列
+
+用栈实现一个队列，基本的操作有：入栈、出栈。
+
+解法：
+
+用两个栈来实现队列，一个栈只负责入队，另一个栈只负责出队。
+
+```java
+public class QueueByStack {
+
+    private Stack<Integer> enQueue = new Stack<Integer>();
+    private Stack<Integer> deQueue = new Stack<Integer>();
+
+    public void enQueue(int data){
+        enQueue.push(data);
+
+    }
+
+    public Integer deQueue(){
+        if(enQueue.isEmpty() && deQueue.isEmpty()){
+            return null;
+        }
+        if(deQueue.isEmpty()){
+            while (!enQueue.isEmpty()){
+                deQueue.push(enQueue.pop());
+            }
+        }
+        return deQueue.pop();
+    }
+}
+```
+
+### 5.寻找全排列的下一个数
+
