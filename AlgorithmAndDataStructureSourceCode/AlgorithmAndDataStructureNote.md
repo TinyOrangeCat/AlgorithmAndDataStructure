@@ -1465,3 +1465,108 @@ public class QueueByStack {
 
 ### 5.寻找全排列的下一个数
 
+给出一个数，找出一个数的全排序的下一个数（找到一个大于且仅大于原数的数）。
+
+解法：
+
+```java
+public class NearestNumber {
+
+    public static Integer findNearestNumber(int num){
+        int []numbers;
+        String numTemp = String.valueOf(num);
+        numbers = new int[numTemp.length()];
+        //数字转换为数组更好操作
+        for(int i = 0;i < numTemp.length();i++){
+            numbers[i] = Integer.valueOf(numTemp.charAt(i)-'0');
+        }
+
+        //找到数字交换的边界
+        int index = findTransferBorder(numbers);
+        if(index == 0){
+            return null;
+        }
+        //交换数字
+        exchangeNumber(numbers,index);
+        //将倒序数字换为正序
+        reverse(numbers,index);
+        return output(numbers);
+    }
+
+    private static int findTransferBorder(int []numbers){
+        for(int i = numbers.length-1;i > 0;i--){
+            if(numbers[i] > numbers[i-1]){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private static void exchangeNumber(int []numbers,int index){
+        int head = numbers[index-1];
+        for(int i = numbers.length-1;i > 0;i--){
+            if(numbers[i] > head){
+                numbers[index-1] = numbers[i];
+                numbers[i] = head;
+                break;
+            }
+        }
+    }
+
+    private static void reverse(int []numbers,int index){
+        for(int i = index,j = numbers.length-1;i < j;i++,j--){
+            int temp = numbers[i];
+            numbers[i] = numbers[j];
+            numbers[j] = temp;
+        }
+    }
+
+    private static Integer output(int []numbers){
+        Integer result = 0;
+        int power = numbers.length-1;
+        for(int i = 0;i < numbers.length;i++){
+            int temp = (int)Math.pow(10,power);
+            result += (numbers[i]*temp);
+            power--;
+        }
+        return  result;
+    }
+}
+```
+
+
+
+### 6.删去K个数字后的最小值
+
+给出一个数字，从该数中删除掉k个数字，要求剩下的数字尽可能的小，该如何 选取被删除的数字？
+
+```java
+public class DeleteKNumbers {
+
+    public static String removeKNumbersResult(String num,int k){
+        if(k >= num.length()){
+            return "0";
+        }
+        int newLength = num.length()-k;
+        char []charStack = new char[newLength];
+        int top = 0;
+        for(int i = 0;i < num.length();++i){
+            char c = num.charAt(i);
+            while (top > 0 && charStack[top-1] > c && k > 0){
+                top -= 1;
+                k -=1;
+            }
+            charStack[top++] = c;
+        }
+        //记录开头有多少个0
+        int offset = 0;
+        while (offset < newLength && charStack[offset] == '0'){
+            offset++;
+        }
+        return offset == newLength ? "0" : new String(charStack,offset,newLength-offset);
+    }
+}
+```
+
+### 7.如何实现大整数相加
+
