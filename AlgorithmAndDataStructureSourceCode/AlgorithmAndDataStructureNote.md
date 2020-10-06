@@ -1570,3 +1570,147 @@ public class DeleteKNumbers {
 
 ### 7.如何实现大整数相加
 
+给出两个很大的整数，要求实现程序 求出两个整数之和。
+
+解法：
+
+```java
+public class BigIntegerAddition {
+
+    public static String bigIntegerAddition(String a,String b){
+        int maxLength = a.length() > b.length() ? a.length() : b.length();
+        //将大数存入数组中（最左边的数是大数的最低位数）
+        int []newArrayA = new int[maxLength+1];
+        for(int i = 0;i < a.length();i++){
+            newArrayA[i] = a.charAt(a.length()-i-1)-'0';
+        }
+        int []newArrayB = new int[maxLength+1];
+        for(int i = 0;i < b.length();i++){
+            newArrayB[i] = b.charAt(b.length()-i-1)-'0';
+        }
+        //对两个数组从左到右进行相加
+        int []result = new int[maxLength + 1];
+        for(int i = 0;i < result.length;i++){
+            int temp = result[i];
+            temp += newArrayA[i];
+            temp += newArrayB[i];
+            if(temp >= 10){
+                result[i+1] = result[i+1]+1;
+                temp -= 10;
+            }
+            result[i] = temp;
+        }
+        //拼相加结果
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean isFirst = false;
+        for(int i = result.length-1;i >= 0;i--){
+            if(!isFirst){
+                if(result[i]==0){
+                    continue;
+                }
+                isFirst = true;
+            }
+            stringBuilder.append(result[i]);
+        }
+        return stringBuilder.toString();
+    }
+}
+```
+
+
+
+### 8.如何求解金矿问题
+
+很久很久以前，有一位国王拥有5座金矿，每夜金矿的黄金含量不同，需要参与挖掘的工人人数也不同。例如有的金矿含量是500kg黄金，需要5个工人来挖掘，有的金矿含量是200kg，需要3个工人来挖掘······
+
+如果参与挖矿的工人的总数是10。每夜金矿要么全挖，要么不挖，不能派出一半人挖取 一半的金矿。要求用程序 求出，要想得到尽可能多的黄金，应该选择挖取哪几座金矿？
+
+200kg黄金/3人
+
+300kg黄金/4人
+
+350kg黄金/3人
+
+400kg黄金/5人
+
+500kg黄金/5人
+
+解法：
+
+反问题转化成指定工人数量（w）和指定金矿数量（n）的问题(**状态转移方程式**)：F(n) = (n,w)（n=0或w=0）
+
+```java
+public class GoldMiner {
+
+    public static int getTheBestGoldMinerPlan(int w,int n,int []p,int []g){
+        if(w == 0 || n ==0){
+            return 0;
+        }
+        if(w < p[n-1]){
+            return getTheBestGoldMinerPlan(w,n-1,p,g);
+        }
+        return Math.max(getTheBestGoldMinerPlan(w,n-1,p,g),getTheBestGoldMinerPlan(w-p[n-1],n-1,p,g)+g[n-1]);
+    }
+
+    public static int getTheBestGoldMinerPlanV2(int w,int n,int []p,int []g){
+        int []plans = new int[w+1];
+        for(int i = 1;i <= g.length;i++){
+            for(int j = w;j >= 1;j--){
+                if(j >= p[i-1]){
+                    plans[j] = Math.max(plans[j],plans[j-p[i-1]]+g[i-1]);
+                }
+            }
+        }
+        return plans[w];
+    }
+}
+```
+
+
+
+### 9.寻找缺失的整数
+
+在一个无序 数组里有99个不重复的正整数，范围是1~100，唯独缺少一个1~100中的整数。如何 找出这个缺失的整数？
+
+扩展：
+
+1.一个无序数组里有若干个正整数，范围是1~100，其中99个数都出现了偶数次，只有1个数出现了奇次数，如何找到这个出现奇次数次的数？
+
+2.一个无序数组里有若干个正整数，范围是1~100，其中98个数都出现了偶数次，有2个数出现了奇次数，如何找到这两个出现奇次数次的数？
+
+解法：
+
+异或运算：相同为1，不同为0。
+
+```java
+public class FindNumbers {
+    
+    public static int[] findLostNumbers(int []num,int resultNum){
+        int []result = new int[resultNum];
+        int xorResult = 0;
+        for(int i = 0;i < num.length;i++){
+            xorResult ^= num[i];
+        }
+        //异或结果为0，说明不存在两个奇数次数的数
+        if(xorResult == 0){
+            return null;
+        }
+        //确定两个数的不同位
+        int xorSeparator = 1;
+        while (0 == (xorSeparator&xorResult)){
+            xorSeparator <<= 1;
+        }
+        for(int i = 0;i < num.length;i++){
+            if(0 == (num[i]&xorSeparator)){
+                result[0] ^= num[i];
+            }else {
+                result[1] ^= num[i];
+            }
+        }
+        return result;
+    }
+}
+```
+
+
+
