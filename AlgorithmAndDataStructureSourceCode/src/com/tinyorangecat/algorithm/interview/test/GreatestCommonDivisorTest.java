@@ -36,4 +36,14 @@ public class GreatestCommonDivisorTest {
 
         System.out.println("4-The greatest common Divisor of "+a+" and "+b+" is :"+ GreatestCommonDivisor.getGreatestCommonDivisor4(a, b));
     }
+
+    @Test
+    public void reviewTest(){
+        int a = 100;
+        int b = 50;
+        System.out.println("The greatest common Divisor of "+a+" and "+b+" is :"+ReviewBiggestCommonDivisor.getTheBiggestCommonDivisor(a, b));
+        System.out.println("V1:The greatest common Divisor of "+a+" and "+b+" is :"+ReviewBiggestCommonDivisor.getTheBiggestCommonDivisorV1(a, b));
+        System.out.println("V2:The greatest common Divisor of "+a+" and "+b+" is :"+ReviewBiggestCommonDivisor.getTheBiggestCommonDivisorV2(a, b));
+        System.out.println("V3:The greatest common Divisor of "+a+" and "+b+" is :"+ReviewBiggestCommonDivisor.getTheBiggestCommonDivisorV3(a, b));
+    }
 }

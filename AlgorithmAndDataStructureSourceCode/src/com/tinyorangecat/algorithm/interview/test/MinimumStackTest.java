@@ -38,4 +38,20 @@ public class MinimumStackTest {
         System.out.println("get Stack pop:"+minimumStack.pop());
         System.out.println("get min in Stack:"+minimumStack.getMin());
     }
+
+    @Test
+    public void reviewTest(){
+        ReviewMinimumStack minimumStack = new ReviewMinimumStack();
+        minimumStack.push(4);
+        minimumStack.push(9);
+        minimumStack.push(7);
+        minimumStack.push(3);
+        minimumStack.push(8);
+        minimumStack.push(5);
+        System.out.println("get min in Stack:"+minimumStack.getMin());
+        minimumStack.push(2);
+        System.out.println("get min in Stack:"+minimumStack.getMin());
+        System.out.println("get Stack pop:"+minimumStack.pop());
+        System.out.println("get min in Stack:"+minimumStack.getMin());
+    }
 }
