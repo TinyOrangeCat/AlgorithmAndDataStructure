@@ -1199,7 +1199,9 @@ public class CycleChain {
     }
 ```
 
+时间复杂度：**T(n) = O(n)**
 
+空间复杂度：**S(n) = O(1)**
 
 扩展问题：
 
