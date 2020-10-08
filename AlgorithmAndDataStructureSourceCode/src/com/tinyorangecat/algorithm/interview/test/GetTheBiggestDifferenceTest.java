@@ -12,4 +12,11 @@ public class GetTheBiggestDifferenceTest {
         System.out.println("Array is : "+ Arrays.toString(array));
         System.out.println("The Biggest Difference in the array is : "+ GetTheBiggestDifference.getTheTheBiggestSortedDifference(array));
     }
+
+    @Test
+    public void reviewTest(){
+        int []array = {2,6,3,4,5,10,9};
+        System.out.println("Review:Array is : "+ Arrays.toString(array));
+        System.out.println("Review:The Biggest Difference in the array is : "+ GetTheBiggestDifference.getTheTheBiggestSortedDifference(array));
+    }
 }

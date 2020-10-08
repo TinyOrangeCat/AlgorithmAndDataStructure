@@ -28,4 +28,16 @@ public class PowerOf2Test {
         int b = 8;
         System.out.println("V3 Number "+b+" is power of 2 = "+ PowerOf2.isPowerOf2V3(b));
     }
+
+    @Test
+    public void reviewTest(){
+        int a = 99;
+        int b = 8;
+        System.out.println("V1 Review: Number "+a+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V1(a));
+        System.out.println("V1 Review: Number "+b+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V1(b));
+        System.out.println("V2 Review: Number "+a+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V2(a));
+        System.out.println("V2 Review: Number "+b+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V2(b));
+        System.out.println("V3 Review: Number "+a+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V3(a));
+        System.out.println("V3 Review: Number "+b+" is power of 2 = "+ ReviewPowerOf2.isPowerOf2V3(b));
+    }
 }

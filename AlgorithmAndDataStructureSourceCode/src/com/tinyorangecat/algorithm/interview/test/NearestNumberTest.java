@@ -13,4 +13,11 @@ public class NearestNumberTest {
         System.out.println("findNearestNumberTest num = "+num);
         System.out.println("The Nearest Number num = "+ NearestNumber.findNearestNumber(num));
     }
+
+    @Test
+    public void reviewTest(){
+        int num = 12345;
+        System.out.println("Review findNearestNumberTest num = "+num);
+        System.out.println("Review The Nearest Number num = "+ ReviewNearestNumber.findNearestNumber(num));
+    }
 }
