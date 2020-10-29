@@ -11,4 +11,12 @@ public class BigIntegerAdditionTest {
         String b = "78946512351356";
         System.out.println(a+" add "+b+" is : "+ BigIntegerAddition.bigIntegerAddition(a,b));
     }
+
+    @Test
+    public void reviewTest(){
+        String a = "12345678";
+        String b = "78946512351356";
+        System.out.println(a+" add "+b+" is : "+ ReviewBigNumberAdd.bigNumberAdd(a,b));
+    }
+
 }

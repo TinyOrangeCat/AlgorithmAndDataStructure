@@ -2,8 +2,8 @@ package com.tinyorangecat.datastruct.queue;
 
 public class MyQueue {
     private int []array;
-    private int front;
-    private int rear;
+    private int front;//头指针
+    private int rear;//尾指针
 
     public MyQueue(int capacity){
         array = new int[capacity];

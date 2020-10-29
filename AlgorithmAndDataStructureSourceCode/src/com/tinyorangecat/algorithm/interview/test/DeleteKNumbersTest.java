@@ -35,4 +35,11 @@ public class DeleteKNumbersTest {
         k = 3;
         System.out.println("The Number "+num+" deleted "+k+" digits is "+ DeleteKNumbers.removeKNumbersResult(num,k));*/
     }
+
+    @Test
+    public void reviewTest(){
+        String num = "541270936";
+        int k = 3;
+        System.out.println("Review:The Number "+num+" deleted "+k+" digits is "+ ReviewDeleteKNumber.removeKNumber(num,k));
+    }
 }
